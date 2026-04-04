@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,23 +13,81 @@
         .w3-pink-bg { background-color: #d81b60 !important; }
         pre { white-space: pre-wrap; word-wrap: break-word; }
 
-        /* --- إعدادات الجريد (Grid Settings) --- */
+        /* ===== main-grid: التخطيط الرئيسي ===== */
         .main-grid {
-            grid-template-columns:1fr;
             display: grid;
-            gap: 25px;
-            padding: 15px;
-
+            grid-template-columns: 1fr; /* افتراضي: عمود واحد */
+            gap: 20px;
+            padding: 10px;
         }
-        
-        /* تنسيق خاص للهيدر والفوتر */
+
+        /* ===== grid-card: كل كارد ===== */
+        .grid-card {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* ===== full-width: يمتد دائماً على كل الأعمدة بغض النظر عن العدد ===== */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ===== Responsive Breakpoints ===== */
+
+        /* موبايل صغير - ≤ 425px → عمود واحد */
+        @media (max-width: 425px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* موبايل كبير - 426px إلى 768px → عمودان */
+        @media (min-width: 426px) and (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .full-width { grid-column: 1 / -1; }
+        }
+
+        /* تابلت - 769px إلى 1024px → عمودان */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 2fr 1fr;
+                gap: 15px;
+            }
+            .full-width { grid-column: 1 / -1; }
+        }
+
+        /* لابتوب - 1025px إلى 1440px → عمودان (2fr 1fr) */
+        @media (min-width: 1025px) and (max-width: 1440px) {
+            .main-grid {
+                grid-template-columns: 2fr 1fr;
+                gap: 20px;
+            }
+            .full-width { grid-column: 1 / -1; }
+        }
+
+ 
+        /* شاشات ضخمة - 1441px إلى 2560px → 3 أعمدة */
+        @media (min-width: 1441px) and (max-width: 2560px) {
+            .main-grid {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 30px;
+            }
+            .full-width { grid-column: 1 / -3; }
+ 
+            /* توسيع المحتوى ليملأ الشاشة الكبيرة */
+            .w3-content {
+                max-width: 2800px !important;
+                max-height: 2800px !important;
+        }
+
         .custom-header { background-color: #fff0f3 !important; border-bottom: 4px solid #d81b60; }
-        
-       
     </style>
 </head>
 <body class="w3-light-grey">
-<!-- header IPv4 Master Guide  -->
+
 <header class="w3-center w3-padding-48 w3-card-4">
     <h1 class="w3-xxxlarge w3-pink-text"><b>IPv4 Master Guide</b></h1>
     <p class="w3-large">Comprehensive Networking Tool for Structure, Calculation, and Validation</p>
@@ -40,9 +99,9 @@
 
         <div class="w3-card-4 w3-white grid-card">
             <div class="w3-container w3-pale-red">
-                <h3><i class="w3-margin-right"></i>Protocol Overview</h3>
+                <h3>Protocol Overview</h3>
             </div>
-            <div class="w3-container w3-padding-16 card-content">
+            <div class="w3-container w3-padding-16">
                 <p>Internet Protocol Version 4 (IPv4) is the dominant protocol of the Network Layer in the OSI model. Introduced in 1983, it uses a 32-bit logical addressing scheme.</p>
                 <div class="w3-panel w3-leftbar w3-border-pink w3-light-grey w3-padding-small">
                     <p><i>"IP provides a best-effort delivery mechanism, handling routing efficiently."</i></p>
@@ -52,11 +111,25 @@
 
         <div class="w3-card-4 w3-white grid-card">
             <div class="w3-container w3-pale-red">
-                <h3><i class="w3-margin-right"></i>Hierarchical Addressing</h3>
+                <h3>Hierarchical Addressing</h3>
             </div>
-            <div class="w3-container w3-padding-16 w3-center card-content">
+            <div class="w3-container w3-padding-16 w3-center">
                 <p class="w3-left-align">IPv4 address parts: Network ID, Subnet ID, and Host ID. This hierarchy allows routers to manage data flow effectively.</p>
                 <img src="https://www.tutorialspoint.com/ipv4/images/ip_addressing.jpg" alt="IP Addressing" class="w3-image w3-round w3-margin-top" style="max-height:150px; opacity:0.9;">
+            </div>
+        </div>
+                <div class="w3-card-4 w3-white grid-card">
+            <div class="w3-container w3-pale-red">
+                <h3>IPv4 Syntax Validator</h3>
+            </div>
+            <div class="w3-container w3-padding-16">
+                <p>Enter the CIDR prefix (e.g., 24) to calculate the mask.</p>
+                <label class="w3-text-pink"><b>Enter IP Address:</b></label>
+                <input id="ipInput" class="w3-input w3-border w3-round w3-light-grey" type="text" placeholder="192.168.1.1">
+                <button onclick="validateIP()" class="w3-button w3-pink-bg w3-text-white w3-round w3-margin-top w3-block">Validate Syntax</button>
+                <div id="validationResult" class="w3-panel w3-round w3-hide w3-margin-top w3-padding">
+                    <p id="validationText"></p>
+                </div>
             </div>
         </div>
 
@@ -64,33 +137,20 @@
             <div class="w3-container w3-pale-red">
                 <h3>Subnet Mask & Host Calculator</h3>
             </div>
-            <div class="w3-container w3-padding-16 card-content">
+            <div class="w3-container w3-padding-16">
                 <p>Enter the CIDR prefix (e.g., 24) to calculate the mask.</p>
                 <label class="w3-text-pink"><b>Prefix (0-32)</b></label>
                 <input id="prefixInput" class="w3-input w3-border w3-round w3-light-grey" type="number" placeholder="24">
                 <button onclick="calculateMask()" class="w3-button w3-pink-bg w3-text-white w3-round w3-margin-top w3-block">Calculate Results</button>
-                
                 <div id="resultBox" class="w3-panel w3-leftbar w3-border-pink w3-pale-red w3-hide w3-margin-top w3-padding">
                     <div id="maskResult"></div>
                 </div>
             </div>
         </div>
 
-        <div class="w3-card-4 w3-white grid-card">
-            <div class="w3-container w3-pale-red">
-                <h3>IPv4 Syntax Validator</h3>
-            </div>
-            <div class="w3-container w3-padding-16 card-content">
-                <label class="w3-text-pink"><b>Enter IP Address:</b></label>
-                <input id="ipInput" class="w3-input w3-border w3-round w3-light-grey" type="text" placeholder="192.168.1.1">
-                <button onclick="validateIP()" class="w3-button w3-pink-bg w3-text-white w3-round w3-margin-top w3-block">Validate Syntax</button>
-                
-                <div id="validationResult" class="w3-panel w3-round w3-hide w3-margin-top w3-padding">
-                    <p id="validationText"></p>
-                </div>
-            </div>
-        </div>
 
+
+        <!-- full-width: يمتد على كل الأعمدة -->
         <div class="w3-card-4 w3-white grid-card full-width">
             <div class="w3-container w3-pale-red">
                 <h3>Binary Logic Solver</h3>
@@ -107,7 +167,6 @@
                     </div>
                 </div>
                 <button onclick="solveBinaryExample()" class="w3-button w3-pink-bg w3-text-white w3-round w3-margin-top w3-block">Find First, Last & Count</button>
-
                 <div id="binarySolution" class="w3-panel w3-border w3-round-large w3-pale-red w3-hide w3-padding-16">
                     <div class="w3-code notranslate w3-white w3-border-pink">
                         <p><b>First Address:</b> <span id="firstAddr" class="w3-text-pink"></span></p>
@@ -118,7 +177,8 @@
             </div>
         </div>
 
-    </div> </div>
+    </div>
+</div>
 
 <footer class="w3-container w3-center w3-margin-top w3-padding-24 w3-pale-red">
     <p><b>IPv4 Interactive Learning Tool</b><br>Designed with Modern Responsive Grid</p>
@@ -128,7 +188,6 @@
     function calculateMask() {
         let p = parseInt(document.getElementById('prefixInput').value);
         if (isNaN(p) || p < 0 || p > 32) return alert("Enter 0-32");
-        
         let mask = [];
         let tempP = p;
         for (let i = 0; i < 4; i++) {
@@ -139,7 +198,7 @@
         let hosts = Math.pow(2, 32 - p);
         document.getElementById('maskResult').innerHTML = `<p>Mask: <b>${mask.join('.')}</b></p><p>Hosts: <b>${hosts.toLocaleString()}</b></p>`;
         document.getElementById('resultBox').classList.remove('w3-hide');
-    }//calculate Mask
+    }
 
     function validateIP() {
         const ip = document.getElementById('ipInput').value;
@@ -153,7 +212,7 @@
             resDiv.className = "w3-panel w3-red w3-round w3-margin-top w3-padding";
             document.getElementById('validationText').innerHTML = "Invalid Format";
         }
-    }//validate IP
+    }
 
     function solveBinaryExample() {
         const ipStr = document.getElementById('binIp').value;
@@ -164,12 +223,12 @@
         let mask = (0xFFFFFFFF << (32 - prefix)) >>> 0;
         let first = (ipNum & mask) >>> 0;
         let last = (ipNum | (~mask)) >>> 0;
-        const numToIp = (n) => [ (n >>> 24) & 0xFF, (n >>> 16) & 0xFF, (n >>> 8) & 0xFF, n & 0xFF ].join('.');
+        const numToIp = (n) => [(n >>> 24) & 0xFF, (n >>> 16) & 0xFF, (n >>> 8) & 0xFF, n & 0xFF].join('.');
         document.getElementById('firstAddr').innerText = numToIp(first);
         document.getElementById('lastAddr').innerText = numToIp(last);
         document.getElementById('numAddr').innerText = Math.pow(2, 32 - prefix).toLocaleString();
         document.getElementById('binarySolution').classList.remove('w3-hide');
-    }//solve Binary Example
+    }
 </script>
 
 </body>
