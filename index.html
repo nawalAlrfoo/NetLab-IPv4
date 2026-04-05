@@ -13,74 +13,61 @@
         .w3-pink-bg { background-color: #d81b60 !important; }
         pre { white-space: pre-wrap; word-wrap: break-word; }
 
-        /* ===== main-grid: التخطيط الرئيسي ===== */
+        /*الاساس */
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr; /* افتراضي: عمود واحد */
+            grid-template-columns: 1fr; 
             gap: 20px;
             padding: 10px;
         }
 
-        /* ===== grid-card: كل كارد ===== */
+        /* =====  كل كارد ===== */
         .grid-card {
             border-radius: 8px;
             overflow: hidden;
         }
 
-        /* ===== full-width: يمتد دائماً على كل الأعمدة بغض النظر عن العدد ===== */
         .full-width {
             grid-column: 1 / -1;
         }
 
-        /* ===== Responsive Breakpoints ===== */
-
-        /* موبايل صغير - ≤ 425px → عمود واحد */
+        
+        /* اقل من 425px//mobile -s */
         @media (max-width: 425px) {
             .main-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* موبايل كبير - 426px إلى 768px → عمودان */
+        /* من(426px) الى (768px) mobile -m and L*/
         @media (min-width: 426px) and (max-width: 768px) {
             .main-grid {
                 grid-template-columns: 1fr 1fr;
                 gap: 12px;
             }
-            .full-width { grid-column: 1 / -1; }
         }
 
-        /* تابلت - 769px إلى 1024px → عمودان */
+        /*من (769px) الى (1024px) Tablet */
         @media (min-width: 769px) and (max-width: 1024px) {
             .main-grid {
                 grid-template-columns: 2fr 1fr;
                 gap: 15px;
             }
-            .full-width { grid-column: 1 / -1; }
         }
-
-        /* لابتوب - 1025px إلى 1440px → عمودان (2fr 1fr) */
+        /* من(1025px) الى (1440px) laptop  S-L*/
         @media (min-width: 1025px) and (max-width: 1440px) {
             .main-grid {
                 grid-template-columns: 2fr 1fr;
                 gap: 20px;
             }
-            .full-width { grid-column: 1 / -1; }
         }
 
- 
-        /* شاشات ضخمة - 1441px إلى 2560px → 3 أعمدة */
-        @media (min-width: 1441px) and (max-width: 2560px) {
+        /*من  (1441px)الى(2560px) Fk*/
+        @media (min-width: 1441px) {
             .main-grid {
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-                gap: 30px;
-            }
-            .full-width { grid-column: 1 / -3; }
- 
-            /* توسيع المحتوى ليملأ الشاشة الكبيرة */
-            .w3-content {
-                max-width: 2800px !important;
-                max-height: 2800px !important;
+                grid-template-columns: 2fr 2fr;
+                gap: 40px;
+            } 
         }
 
         .custom-header { background-color: #fff0f3 !important; border-bottom: 4px solid #d81b60; }
@@ -88,15 +75,18 @@
 </head>
 <body class="w3-light-grey">
 
+<!-- ============header========== -->
 <header class="w3-center w3-padding-48 w3-card-4">
     <h1 class="w3-xxxlarge w3-pink-text"><b>IPv4 Master Guide</b></h1>
     <p class="w3-large">Comprehensive Networking Tool for Structure, Calculation, and Validation</p>
 </header>
 
+<!-- ================CARD============== -->
 <div class="w3-content" style="max-width:1200px; margin-top:30px">
 
     <div class="main-grid">
-
+        
+        <!-- ====Protocol Overview CARD ==== -->
         <div class="w3-card-4 w3-white grid-card">
             <div class="w3-container w3-pale-red">
                 <h3>Protocol Overview</h3>
@@ -109,6 +99,8 @@
             </div>
         </div>
 
+
+        <!-- ====Hierarchical Addressing CARD ==== -->
         <div class="w3-card-4 w3-white grid-card">
             <div class="w3-container w3-pale-red">
                 <h3>Hierarchical Addressing</h3>
@@ -133,6 +125,7 @@
             </div>
         </div>
 
+        <!-- ====Subnet Mask & Host Calculato=== -->
         <div class="w3-card-4 w3-white grid-card">
             <div class="w3-container w3-pale-red">
                 <h3>Subnet Mask & Host Calculator</h3>
@@ -150,7 +143,7 @@
 
 
 
-        <!-- full-width: يمتد على كل الأعمدة -->
+        <!-- ===Binary Logic Solver CARD=== -->
         <div class="w3-card-4 w3-white grid-card full-width">
             <div class="w3-container w3-pale-red">
                 <h3>Binary Logic Solver</h3>
@@ -179,15 +172,18 @@
 
     </div>
 </div>
-
+<!-- ================footer PART=============== -->
 <footer class="w3-container w3-center w3-margin-top w3-padding-24 w3-pale-red">
-    <p><b>IPv4 Interactive Learning Tool</b><br>Designed with Modern Responsive Grid</p>
+    <p><b>IPv4 Interactive Learning Tool</b><br>Developing websites for mobile devices</p>
 </footer>
 
+
+
+<!-- =============JAVA SCRIPT============= -->
 <script>
     function calculateMask() {
         let p = parseInt(document.getElementById('prefixInput').value);
-        if (isNaN(p) || p < 0 || p > 32) return alert("Enter 0-32");
+        if (isNaN(p) || p < 0 || p > 32) return alert("Enter 0-32");//تاكد من القيمة
         let mask = [];
         let tempP = p;
         for (let i = 0; i < 4; i++) {
@@ -200,30 +196,47 @@
         document.getElementById('resultBox').classList.remove('w3-hide');
     }
 
-    function validateIP() {
-        const ip = document.getElementById('ipInput').value;
-        const resDiv = document.getElementById('validationResult');
-        const ipPattern = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-        resDiv.classList.remove('w3-hide');
-        if (ipPattern.test(ip)) {
-            resDiv.className = "w3-panel w3-green w3-round w3-margin-top w3-padding";
-            document.getElementById('validationText').innerHTML = "Valid IPv4 Address";
-        } else {
-            resDiv.className = "w3-panel w3-red w3-round w3-margin-top w3-padding";
-            document.getElementById('validationText').innerHTML = "Invalid Format";
-        }
+function validateIP() {
+    const ip = document.getElementById('ipInput').value;
+    const resDiv = document.getElementById('validationResult');
+    const resText = document.getElementById('validationText');
+    
+    // تقسيم النص إلى مصفوفة عند النقطة كلها 
+    const parts = ip.split('.');
+    
+    // استخدمنا every لنتأكد أن الشرط ينطبق على جميع الأجزاء
+    const isValid = parts.length === 4 && parts.every(part => {
+        // نتاكد انو مو null
+        if (part.trim() === "") return false;
+        return checkPart(parseInt(part));
+    });
+
+    resDiv.classList.remove('w3-hide');
+
+    if (isValid) {
+        resDiv.className = "w3-panel w3-green w3-round w3-margin-top w3-padding";
+        resText.innerHTML = "Valid IPv4 Address";
+    } else {
+        resDiv.className = "w3-panel w3-red w3-round w3-margin-top w3-padding";
+        resText.innerHTML = "Invalid Format";
     }
+}
+
+function checkPart(num) {
+    return num >= 0 && num <= 255;
+}
 
     function solveBinaryExample() {
         const ipStr = document.getElementById('binIp').value;
         const prefix = parseInt(document.getElementById('binPrefix').value);
         if (!ipStr || isNaN(prefix)) return alert("Fill all fields");
-        const ipParts = ipStr.split('.');
-        let ipNum = (parseInt(ipParts[0]) << 24) | (parseInt(ipParts[1]) << 16) | (parseInt(ipParts[2]) << 8) | (parseInt(ipParts[3]));
-        let mask = (0xFFFFFFFF << (32 - prefix)) >>> 0;
+        const ipParts = ipStr.split('.');//بقسمه حسب الدوت يعني بعطيني الاربع اجزاء
+        let ipNum = (parseInt(ipParts[0]) << 24) | (parseInt(ipParts[1]) << 16) | (parseInt(ipParts[2]) << 8) | (parseInt(ipParts[3]));//IP to Integer Conversion
+        let mask = (0xFFFFFFFF << (32 - prefix)) >>> 0;//بحسب ال mask
         let first = (ipNum & mask) >>> 0;
         let last = (ipNum | (~mask)) >>> 0;
-        const numToIp = (n) => [(n >>> 24) & 0xFF, (n >>> 16) & 0xFF, (n >>> 8) & 0xFF, n & 0xFF].join('.');
+        // العملية & (AND)
+        const numToIp = (n) => [(n >>> 24) & 0xFF, (n >>> 16) & 0xFF, (n >>> 8) & 0xFF, n & 0xFF].join('.');//نرجع الرقم لشكله الحقيقي عكس "IP to Integer Conversion"
         document.getElementById('firstAddr').innerText = numToIp(first);
         document.getElementById('lastAddr').innerText = numToIp(last);
         document.getElementById('numAddr').innerText = Math.pow(2, 32 - prefix).toLocaleString();
